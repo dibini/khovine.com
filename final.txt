@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layers of the Earth</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-color: #333;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            text-align: center;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: block;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a[href="#home"] {
+            background-image: url('layer.jpg');
+            background-size: cover;
+            background-position: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        nav ul li a[href="#layers"] {
+            background-image: url('earth.jpg');
+            background-size: cover;
+            background-position: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        nav ul li a[href="#about-us"] {
+            background-image: url('lausho.jpg'); /* Added background image for About Us button */
+            background-size: cover;
+            background-position: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+
+        nav ul li a.active {
+            background-color: rgba(0, 128, 0, 0.7);
+            color: #FFD700;
+        }
+
+        .section {
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            margin: 50px 20px;
+            border-radius: 8px;
+            opacity: 0;
+            display: none;
+            animation: fadeIn 1s forwards;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #home {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #home-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: -1;
+            object-position: center;
+        }
+
+        #home-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid #fff;
+            width: 0;
+            animation: typing 3s steps(40) 1s forwards, colorChange 5s infinite alternate;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes colorChange {
+            0% { color: #fff; }
+            25% { color: #FF6347; }
+            50% { color: #FFD700; }
+            75% { color: #32CD32; }
+            100% { color: #FF69B4; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #layers {
+            background-image: url('earth.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            height: 100vh;
+            display: flex;
+            padding-bottom: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .layer-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-left: 20px;
+        }
+
+        .layer-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 12px;
+            color: white;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 180px;
+            text-align: center;
+            font-size: 1.1em;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .layer-box:hover {
+            background-color: rgba(0, 128, 0, 0.7);
+        }
+
+        .description-box {
+            position: absolute;
+            right: 20px;
+            padding: 15px;
+            width: 300px;
+            border-radius: 5px;
+            display: none;
+            z-index: 5;
+            max-height: 300px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-weight: bold;
+        }
+
+        #inner-core-description {
+            background: linear-gradient(to right, rgba(255, 255, 224, 0.7), rgba(255, 255, 0, 0.7));
+        }
+
+        #outer-core-description {
+            background: linear-gradient(to right, rgba(255, 255, 0, 0.7), rgba(255, 165, 0, 0.7));
+        }
+
+        #mantle-description {
+            background: linear-gradient(to right, rgba(255, 165, 0, 0.7), rgba(255, 0, 0, 0.7));
+        }
+
+        #crust-description {
+            background: linear-gradient(to right, rgba(0, 0, 255, 0.7), rgba(0, 0, 139, 0.7));
+        }
+
+        .temperature-container {
+            display: none;  /* Initially hidden */
+            flex-direction: column; /* Align boxes vertically */
+            justify-content: flex-start; /* Align them towards the top of the container */
+            align-items: center; /* Center them horizontally */
+            position: absolute;
+            top: 34%; /* Position the boxes lower on the screen */
+            left: 47%; /* Position horizontally in the center */
+            transform: translateX(-50%); /* Adjust for perfect centering */
+            z-index: 2;
+            gap: 51px; /* Adjust space between each box */
+        }
+
+        .temperature-box {
+            background-color: rgba(255, 165, 0, 0.0); /* Blue color with transparency */
+            padding: 10px;
+            color: white;
+            width: 120px; /* Keep the width consistent for all boxes */
+            text-align: center;
+            border-radius: 5px;
+            font-size: 0.75em; /* Uniform font size */
+        }
+
+        /* About Us Section */
+        .team {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .team-member img {
+            border-radius: 10px;
+        }
+
+        .team-member p {
+            margin: 10px 0 5px;
+        }
+
+        /* About Us Section Background */
+       #about-us {
+            background-image: url('sos.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding-top: 30px;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Adding overlay to the background */
+        #about-us::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.0); /* Adjust the alpha (last value) for more and more transparency */
+            z-index: 2;
+        }
+        /* Add background to text containers for more readability */
+        .contact-box,
+        .team-member p,
+        .team-member img {
+            position: relative;
+            z-index: 2;
+        }
+        nav ul li a[href="#about-us"] {
+            background-image: url('wews.jpg');
+            background-size: cover;
+            background-position: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+
+    <script>
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('.section');
+            var navLinks = document.querySelectorAll('nav ul li a');
+            var temperatureContainer = document.querySelector('.temperature-container'); // Target temperature container
+
+            sections.forEach(function (section) {
+                section.style.display = 'none';
+                section.style.opacity = 0;
+            });
+
+            navLinks.forEach(function (link) {
+                link.classList.remove('active');
+            });
+
+            var selectedSection = document.getElementById(sectionId);
+            selectedSection.style.display = 'block';
+            setTimeout(function () {
+                selectedSection.style.opacity = 1;
+            }, 200);
+
+            var activeLink = document.querySelector('nav ul li a[href="#' + sectionId + '"]');
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // Show temperature container only when Layers section is active
+            if (sectionId === 'layers') {
+                temperatureContainer.style.display = 'flex';
+            } else {
+                temperatureContainer.style.display = 'none';
+            }
+        }
+
+        let descriptionCounter = 0;
+
+        function showDescription(layer) {
+            var description = document.getElementById(layer + '-description');
+            var allDescriptions = document.querySelectorAll('.description-box');
+            allDescriptions.forEach(function (desc) {
+                desc.style.display = 'none';
+                desc.style.opacity = 0;
+            });
+
+            description.style.display = 'block';
+            setTimeout(() => { description.style.opacity = 1; }, 50);
+
+            const padding = 15;
+            const descriptionHeight = description.offsetHeight;
+            const maxHeight = window.innerHeight - 100;
+            let offset = descriptionCounter * (descriptionHeight + padding);
+
+            if (offset + descriptionHeight > maxHeight) {
+                offset = maxHeight - descriptionHeight;
+            }
+
+            description.style.top = offset + 'px';
+            descriptionCounter++;
+        }
+    </script>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#home" onclick="showSection('home')" class="active">Home</a></li>
+            <li><a href="#layers" onclick="showSection('layers')">Layers of the Earth</a></li>
+            <li><a href="#about-us" onclick="showSection('about-us')">About Us</a></li>
+        </ul>
+    </nav>
+
+    <div id="home" class="section" style="display:block;">
+        <video autoplay muted loop id="home-video">
+            <source src="sure.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <h2 id="home-title">The Layers of the Earth</h2>
+        <p>The layers of the Earth are the distinct regions of the planet that differ in composition, structure, and properties. Each layer plays an important role in the overall functioning of the Earth, from providing a foundation for life to influencing geological activity.</p>
+    </div>
+
+    <div id="layers" class="section" style="display:none;">
+        <div class="layer-container">
+            <div class="layer-box" onclick="showDescription('inner-core')">First Layer</div>
+            <div class="layer-box" onclick="showDescription('outer-core')">Second Layer</div>
+            <div class="layer-box" onclick="showDescription('mantle')">Third Layer</div>
+            <div class="layer-box" onclick="showDescription('crust')">Fourth Layer</div>
+        </div>
+
+        <div id="inner-core-description" class="description-box">
+            <h3>Inner Core</h3>
+            <p>The inner core is the Earth's innermost layer. It is solid and extremely hot, primarily composed of iron and nickel. It is under immense pressure, making it solid despite the high temperatures.</p>
+        </div>
+        <div id="outer-core-description" class="description-box">
+            <h3>Outer Core</h3>
+            <p>The outer core is a liquid layer composed mainly of iron and nickel. It lies beneath the mantle and is responsible for the Earth's magnetic field.</p>
+        </div>
+        <div id="mantle-description" class="description-box">
+            <h3>Mantle</h3>
+            <p>The mantle lies beneath the Earth's crust. It is composed of hot, semi-solid rock that moves slowly over time. It is the largest layer of the Earth and is responsible for the movement of tectonic plates.</p>
+        </div>
+        <div id="crust-description" class="description-box">
+            <h3>Crust</h3>
+            <p>The Earth's crust is the outermost layer. It is solid and relatively thin compared to the other layers. The crust is divided into tectonic plates that float on the semi-fluid layer beneath.</p>
+        </div>
+
+        <div class="temperature-container">
+            <div class="temperature-box">Inner Core: 5000°C</div>
+            <div class="temperature-box">Outer Core: 3000°C</div>
+            <div class="temperature-box">Mantle: 1000-3700°C</div>
+            <div class="temperature-box">Crust: 100-700°C</div>
+        </div>
+    </div>
+
+   <!-- About Us Section -->
+<div id="about-us" class="section" style="display: none;">
+    <!-- About Us Title and Description -->
+    <div class="contact-box" style="text-align: center; margin-top: -10px; margin-bottom: 10px;">
+        <h2 style="white: white; margin-bottom: 5px;">ABOUT US</h2>
+        <p style="color: white; font-size: 15px; max-width: 600px; margin: 0 auto;">
+           We created this website to unravel the hidden layers of our planet, making the mysteries of Earth's structure both accessible and captivating. Our goal is to spark curiosity and deepen understanding of the forces that shape the world beneath us.
+        </p>
+    </div>
+
+    <!-- Instructor -->
+    <div class="team-member" style="text-align: center; margin-top: 10px; margin-bottom: 10px;">
+        <img src="trrhena.jpg" alt="Ms. Rhena Mae Montes" style="width: 220px; height: 220px; border-radius: 50%; object-fit: cover;">
+        <p style="font-weight: bold; font-size: 20px; color: white; margin-top: 2px;">Ms. Rhena Mae Montes</p>
+        <p style="font-size: 14px; color: white; margin-top: 20px; margin-bottom: 20px;">Empowerment Technology Instructor</p>
+    </div>
+
+    <!-- Students -->
+    <div class="team" style="display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; margin-top: -20px;">
+        <div class="team-member" style="text-align: center;">
+            <img src="vine.jpg" alt="Divine Merry Alinghawa" style="width: 170px; height: 190px; border-radius: 50%; object-fit: cover;">
+            <p style="font-weight: bold; font-size: 15px; color: white; margin-top: 6px;">Divine Merry Alinghawa</p>
+            <p style="font-size: 14px; color: white;">Email: alinghawad@gmail.com</p>
+        </div>
+        <div class="team-member" style="text-align: center;">
+            <img src="khollen.jpg" alt="Khollen Kay Enriquez" style="width: 170px; height: 190px; border-radius: 50%; object-fit: cover;">
+            <p style="font-weight: bold; font-size: 15px; color: white; margin-top: 6px;">Khollen Kay Enriquez</p>
+            <p style="font-size: 14px; color: white;">Email: khollen@gmail.com</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
